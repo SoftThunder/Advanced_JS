@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бургер</title>
+</head>
+<body>
+        <header>
+           <h1>Создай свой Бургер</h1>
+        </header>
+        <main>
+            <form action="">
+            <div class="burger_size">
+            <h2>выбери размер</h2>
+           <p><input type="radio" name = "size" date-price = "50" date-kkal = "20" >маленький</p>
+           <p><input type="radio" name = "size" date-price = "100" date-kkal = "40">Большой</p>
+            </div>
+            <div class="burger_topping">
+                <h2>Выбери начинку</h2>
+                <p><input type="radio" name = "topping" date-price = "10" date-kkal = "20" >Cыр</p>
+                <p><input type="radio" name = "topping" date-price = "20" date-kkal = "5">Салат</p>
+                <p><input type="radio" name = "topping" date-price = "15" date-kkal = "10">Картофель</p>
+            </div>
+        <button type="submit">Расчитать</button>
+        </form>
+            <div class="total">
+                <h2>Итого:</h2>
+                <p><span id = "total_kkal"></span> Килокалоррий</p>
+                <p><span id = "tonal_price"></span> Рублей</p>
+            </div>
+        </main>
+        <script src="burger.js"></script>
+</body>
+</html>
