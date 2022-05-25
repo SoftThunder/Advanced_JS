@@ -30,18 +30,21 @@ class GoodsList {
     }).join('');
     document.querySelector('.goods-list').innerHTML = goodsList;
   }
-  sumPrice(){
-    const priceList = this.list.map(item => {
-     return item.price;
+  sumPrice()
+  {
+    return this.list.reduce((prev, { price }) => prev + price, 0)
+ // сначала делал так, потом понял, что нагородил)))
+    //   const priceList = this.list.map(item => {  
+  //    return item.price;
      
-    })
-    const initialValue = 0;
-    const sumWithInitial = priceList.reduce(
-      (previousValue, currentValue) => previousValue + currentValue,
-      initialValue
-    );
-  return sumWithInitial;
-  }
+  //   })
+  //   const initialValue = 0;
+  //   const sumWithInitial = priceList.reduce(
+  //     (previousValue, currentValue) => previousValue + currentValue,
+  //     initialValue
+  //   );
+  // return sumWithInitial;
+   }
 }
 
 const goodsList = new GoodsList(goods);
