@@ -4,27 +4,43 @@ const goods = [
   { title: 'Jacket', price: 350 },
   { title: 'Shoes', price: 250 },
 ];
+ const GET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json';
+ const GET_BASKET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getBasket.json'
+ function service (url, callback){
+   xhr = new XMLHttpRequest();
+   xhr.open('GET',url);
+   xhr.send();
+   xhr.onload = () => {
+     callback(JSON.parse(xhr.response))
+   }
+ }
+
 class GoodsItem {
-  constructor({ title = '', price = 0 }) {
-    this.title = title;
+  constructor({ product_name = '', price = 0 }) {
+    this.product_name = product_name;
     this.price = price;
   }
   render() {
     return `
     <div class="goods-item">
-    <h3>${this.title}</h3> 
+    <h3>${this.product_name}</h3> 
     <p>${this.price}</p>
   </div>
     `
   }
 }
-
+ 
 class GoodsList {
-  constructor(list = []) {
-    this.list = list;
+  items = [];
+  fetchGoods(callback) {
+    service (GET_GOODS_ITEMS, (data) => {
+      this.items = data;
+      callback()
+    });
   }
+ 
   render() {
-    const goodsList = this.list.map(item => {
+    const goodsList = this.items.map(item => {
       const goodsItem = new GoodsItem(item);
       return  goodsItem.render();
     }).join('');
@@ -33,21 +49,26 @@ class GoodsList {
   sumPrice()
   {
     return this.list.reduce((prev, { price }) => prev + price, 0)
- // сначала делал так, потом понял, что нагородил)))
-    //   const priceList = this.list.map(item => {  
-  //    return item.price;
-     
-  //   })
-  //   const initialValue = 0;
-  //   const sumWithInitial = priceList.reduce(
-  //     (previousValue, currentValue) => previousValue + currentValue,
-  //     initialValue
-  //   );
-  // return sumWithInitial;
+ 
    }
 }
-
-const goodsList = new GoodsList(goods);
-goodsList.render();
-console.log(goodsList.sumPrice());
+// class BasketGoods{
+//   items = [];
+//   fetchData() {
+//     service (GET_BASKET_GOODS_ITEMS, (data) => {
+//       this.items = data.contents;
+//     });
+//   }
+ 
+// }
+ const goodsList = new GoodsList();
+ goodsList.fetchGoods(() => {goodsList.render();
+ });
+// const basketGoods = new BasketGoods();
+// basketGoods.fetchData();
+// document.getElementsByClassName('cart-button')[0].addEventListener('click', () => {
+//   const value = document.getElementsByClassName('goods-search')[0].value;
+//   goodsList.filterItems(value);
+//   goodsList.render();
+// })
 
