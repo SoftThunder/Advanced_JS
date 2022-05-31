@@ -4,16 +4,16 @@ const goods = [
   { title: 'Jacket', price: 350 },
   { title: 'Shoes', price: 250 },
 ];
- const GET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json';
- const GET_BASKET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getBasket.json'
- function service (url, callback){
-   xhr = new XMLHttpRequest();
-   xhr.open('GET',url);
-   xhr.send();
-   xhr.onload = () => {
-     callback(JSON.parse(xhr.response))
-   }
- }
+const GET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json';
+const GET_BASKET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getBasket.json'
+function service(url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.send();
+  xhr.onload = () => {
+    callback(JSON.parse(xhr.response))
+  }
+}
 
 class GoodsItem {
   constructor({ product_name = '', price = 0 }) {
@@ -29,46 +29,43 @@ class GoodsItem {
     `
   }
 }
- 
+
 class GoodsList {
   items = [];
   fetchGoods(callback) {
-    service (GET_GOODS_ITEMS, (data) => {
+    service(GET_GOODS_ITEMS, (data) => {
       this.items = data;
       callback()
     });
   }
- 
+
   render() {
     const goodsList = this.items.map(item => {
       const goodsItem = new GoodsItem(item);
-      return  goodsItem.render();
+      return goodsItem.render();
     }).join('');
     document.querySelector('.goods-list').innerHTML = goodsList;
   }
-  sumPrice()
-  {
+  sumPrice() {
     return this.list.reduce((prev, { price }) => prev + price, 0)
- 
-   }
+
+  }
 }
-// class BasketGoods{
-//   items = [];
-//   fetchData() {
-//     service (GET_BASKET_GOODS_ITEMS, (data) => {
-//       this.items = data.contents;
-//     });
-//   }
- 
-// }
- const goodsList = new GoodsList();
- goodsList.fetchGoods(() => {goodsList.render();
- });
-// const basketGoods = new BasketGoods();
-// basketGoods.fetchData();
-// document.getElementsByClassName('cart-button')[0].addEventListener('click', () => {
-//   const value = document.getElementsByClassName('goods-search')[0].value;
-//   goodsList.filterItems(value);
-//   goodsList.render();
-// })
+class BasketGoods {
+  items = [];
+  fetchGoods(callback = () => { }) {
+    service(GET_BASKET_GOODS_ITEMS, (data) => {
+      this.items = data.contents;
+      callback()
+    });
+  }
+}
+
+const goodsList = new GoodsList();
+goodsList.fetchGoods(() => {
+  goodsList.render();
+});
+
+const basketG = new BasketGoods();
+basketG.fetchGoods();
 
